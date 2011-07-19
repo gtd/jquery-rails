@@ -29,7 +29,7 @@ You're done!
 
 This gem adds a single generator to Rails 3, jquery:install. Running the generator will remove any Prototype JS files you may happen to have, fetch jQuery and the jQuery-ujs driver for Rails, and (optionally) fetch jQuery UI.
 
-The gem will also hook into the Rails configuration process, removing Prototype and adding jQuery to the javascript files included by the `javascript_include_tag(:defaults)` call. While the plugin downloads minified and un-minified versions of jQuery and jQuery UI, only the minified versions are included in :default.
+The gem will also hook into the Rails configuration process, removing Prototype and adding jQuery to the javascript files included by the `javascript_include_tag(:defaults)` call. The plugin downloads minified and non-minified versions of jQuery and jQuery UI, but only one or the other will be added to `:defaults` depending on whether the environment is production or not.
 
 ### Installation
 
@@ -42,3 +42,7 @@ Then, run `bundle install`. To invoke the generator, run:
     rails generate jquery:install #--ui to enable jQuery UI
 
 You're done!
+
+### Gotchas
+
+If you use `javascript_include_tag(:all)` in your app, then having two copies of jquery (minified and non-minified) will create a problem because Rails will add whichever one doesn't appear in `:defaults` to `:all`.  If you need to use `javascript_include_tag(:all)` then the easiest fix is to simply delete one of the copies, and jquery-rails will use the remaining version for both development and production.
